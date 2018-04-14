@@ -117,6 +117,10 @@ function UnitSpec(unit)
     and not UnitBuffID(unit, 15473) then
       return "Disc"
     end
+  elseif UnitClass(unit) == "Druid" then
+    if UnitBuffID(unit, 33891) then
+      return "RDruid"
+    end
   else
     return nil
   end

@@ -9,6 +9,7 @@ function Any()
   for i=1, #TrinketList do
     if UnitDebuffID("player", TrinketList[i]) then
       UseItemByName("Medallion of the Horde")
+      UseItemByName("Medallion of the Alliance")
     end
   end
 
@@ -45,9 +46,8 @@ function Any()
   --Bauble Arena
   if getHp(lowest) < 40 then
     for i=1, #SilenceList do
-      if UnitDebuffID("player", 51514) --hex
-      or UnitDebuffID("player", SilenceList[i])
-      or cdRemains(48825) ~= 0
+      if UnitDebuffID("player", SilenceList[i])
+      or cdRemains(18562) ~= 0
       then
         UseItemByName("Bauble of True Blood", lowest)
       end
@@ -59,7 +59,7 @@ function Any()
   and CanHeal("party1") then
     for i=1, #CurseList do
       if UnitDebuffID("party1", CurseList[i]) then
-        _castSpell(4987, "party1")
+        _castSpell(2782, "party1")
       end
     end
   end
@@ -69,7 +69,7 @@ function Any()
   and CanHeal("party2") then
     for i=1, #CurseList do
       if UnitDebuffID("party2", CurseList[i]) then
-        _castSpell(4987, "party2")
+        _castSpell(2782, "party2")
       end
     end
   end
@@ -101,11 +101,11 @@ function Any()
   for _, unit in ipairs(EnemyList) do
     if ValidUnit(unit, "enemy") 
     and getHp(unit) > 95 then 
-      if UnitClass(unit) == "Priest" 
-      or UnitClass(unit) == "Druid" 
+      if UnitSpec(unit) == "Disc" 
+      or UnitSpec(unit) == "RDruid" 
       or UnitSpec(unit) == "Holy" then
-        if UnitDebuffID("target", 33786) then
-          nextclone = GetTime() + 30
+        if UnitDebuffID(unit, 33786) then
+          nextclone = GetTime() + 20
         end
         if nextclone ~= nil
         and GetTime() > nextclone then
@@ -115,6 +115,38 @@ function Any()
         and not UnitDebuffID("arena1", 33786)
         and not UnitDebuffID("arena2", 33786)
         and not UnitDebuffID("arena3", 33786)
+        and not UnitDebuffID(unit, 12826)
+        and not UnitDebuffID(unit, 28271)
+        and not UnitDebuffID(unit, 61721)
+        and not UnitDebuffID(unit, 61305)
+        and not UnitDebuffID(unit, 28272)
+        and UnitBuffID(unit, 8178) == nil --grounding
+        and UnitBuffID(unit, 45438) == nil --ice block
+        and UnitBuffID(unit, 642) == nil --bubble
+        and UnitBuffID(unit, 19263) == nil --deterrance
+        and UnitBuffID(unit, 31224) == nil --cloak of shadows
+        and UnitBuffID(unit, 48707) == nil --AMS
+        and UnitDebuffID(unit, 51724) == nil --sap
+        and UnitDebuffID(unit, 10308) == nil --hoj
+        and UnitDebuffID(unit, 44572) == nil --deep freeze
+        and UnitDebuffID(unit, 15487) == nil --silence
+        and UnitDebuffID(unit, 47476) == nil --strangulate
+        and UnitDebuffID(unit, 6215) == nil --fear
+        and UnitDebuffID(unit, 10890) == nil --psychic scream
+        and UnitDebuffID(unit, 6358) == nil --seduction
+        and UnitDebuffID(unit, 2139) == nil --counter spell
+        and UnitDebuffID(unit, 17928) == nil --howl of terror
+        and UnitDebuffID(unit, 60210) == nil --freezing arrow
+        and UnitDebuffID(unit, 14309) == nil --freezing trap
+        and UnitDebuffID(unit, 2094) == nil --blind
+        and UnitDebuffID(unit, 1776) == nil --gouge
+        and UnitDebuffID(unit, 1833) == nil --cheapshot
+        and UnitDebuffID(unit, 8643) == nil --kidney
+        and UnitDebuffID(unit, 51514) == nil --hex
+        and UnitDebuffID(unit, 8983) == nil --bear stun
+        and UnitDebuffID(unit, 5246) == nil --intimidating shout
+        and UnitName(unit) ~= UnitName("party1target")
+        and UnitName(unit) ~= UnitName("party2target") 
         and getHp(lowest) > 90
         and not UnitDebuffID(unit, 33786) then
           _castSpell(33786, unit)
@@ -123,10 +155,10 @@ function Any()
     end
   end
 
-  --[[Clone arena1 if not party1target or party2target
+  --Clone arena1 if not party1target or party2target
     if ValidUnit("arena1", "enemy") 
     and getHp("arena1") > 95 then 
-      if UnitDebuffID("target", 33786) then
+      if UnitDebuffID("arena1", 33786) then
         clonearena1 = GetTime() + 20
       end
       if clonearena1 ~= nil
@@ -134,12 +166,145 @@ function Any()
         clonearena1 = nil
       end
       if clonearena1 == nil 
+      and getHp(lowest) > 90
       and UnitName("arena1") ~= UnitName("party1target")
-      and UnitName("arena1") ~= UnitName("party2target") then
+      and UnitName("arena1") ~= UnitName("party2target") 
+      and not UnitDebuffID("arena1", 33786)
+      and not UnitDebuffID("arena2", 33786)
+      and not UnitDebuffID("arena3", 33786)
+      and not UnitDebuffID("arena1", 12826)
+      and not UnitDebuffID("arena1", 28271)
+      and not UnitDebuffID("arena1", 61721)
+      and not UnitDebuffID("arena1", 61305)
+      and UnitBuffID("arena1", 8178) == nil --grounding
+      and UnitBuffID("arena1", 45438) == nil --ice block
+      and UnitBuffID("arena1", 642) == nil --bubble
+      and UnitBuffID("arena1", 19263) == nil --deterrance
+      and UnitBuffID("arena1", 31224) == nil --cloak of shadows
+      and UnitBuffID("arena1", 48707) == nil --AMS
+      and UnitDebuffID("arena1", 51724) == nil --sap
+      and UnitDebuffID("arena1", 10308) == nil --hoj
+      and UnitDebuffID("arena1", 44572) == nil --deep freeze
+      and UnitDebuffID("arena1", 15487) == nil --silence
+      and UnitDebuffID("arena1", 47476) == nil --strangulate
+      and UnitDebuffID("arena1", 6215) == nil --fear
+      and UnitDebuffID("arena1", 10890) == nil --psychic scream
+      and UnitDebuffID("arena1", 6358) == nil --seduction
+      and UnitDebuffID("arena1", 2139) == nil --counter spell
+      and UnitDebuffID("arena1", 17928) == nil --howl of terror
+      and UnitDebuffID("arena1", 60210) == nil --freezing arrow
+      and UnitDebuffID("arena1", 14309) == nil --freezing trap
+      and UnitDebuffID("arena1", 2094) == nil --blind
+      and UnitDebuffID("arena1", 1776) == nil --gouge
+      and UnitDebuffID("arena1", 1833) == nil --cheapshot
+      and UnitDebuffID("arena1", 8643) == nil --kidney
+      and UnitDebuffID("arena1", 51514) == nil --hex
+      and UnitDebuffID("arena1", 8983) == nil --bear stun
+      and UnitDebuffID("arena1", 5246) == nil --intimidating shout
+      and not UnitDebuffID("arena1", 28272) then
         _castSpell(33786, "arena1")
       end
-    end]]
-
+    end
+   --Clone arena2 if not party1target or party2target
+   if ValidUnit("arena2", "enemy") 
+   and getHp("arena2") > 95 then 
+     if UnitDebuffID("arena2", 33786) then
+       clonearena2 = GetTime() + 20
+     end
+     if clonearena2 ~= nil
+     and GetTime() > clonearena2 then
+       clonearena2 = nil
+     end
+     if clonearena2 == nil 
+     and getHp(lowest) > 90
+     and UnitName("arena2") ~= UnitName("party1target")
+     and UnitName("arena2") ~= UnitName("party2target") 
+     and not UnitDebuffID("arena1", 33786)
+     and not UnitDebuffID("arena2", 33786)
+     and not UnitDebuffID("arena3", 33786)
+     and not UnitDebuffID("arena2", 12826)
+     and not UnitDebuffID("arena2", 28271)
+     and not UnitDebuffID("arena2", 61721)
+     and not UnitDebuffID("arena2", 61305)
+     and UnitBuffID("arena2", 8178) == nil --grounding
+     and UnitBuffID("arena2", 45438) == nil --ice block
+     and UnitBuffID("arena2", 642) == nil --bubble
+     and UnitBuffID("arena2", 19263) == nil --deterrance
+     and UnitBuffID("arena2", 31224) == nil --cloak of shadows
+     and UnitBuffID("arena2", 48707) == nil --AMS
+     and UnitDebuffID("arena2", 51724) == nil --sap
+     and UnitDebuffID("arena2", 10308) == nil --hoj
+     and UnitDebuffID("arena2", 44572) == nil --deep freeze
+     and UnitDebuffID("arena2", 15487) == nil --silence
+     and UnitDebuffID("arena2", 47476) == nil --strangulate
+     and UnitDebuffID("arena2", 6215) == nil --fear
+     and UnitDebuffID("arena2", 10890) == nil --psychic scream
+     and UnitDebuffID("arena2", 6358) == nil --seduction
+     and UnitDebuffID("arena2", 2139) == nil --counter spell
+     and UnitDebuffID("arena2", 17928) == nil --howl of terror
+     and UnitDebuffID("arena2", 60210) == nil --freezing arrow
+     and UnitDebuffID("arena2", 14309) == nil --freezing trap
+     and UnitDebuffID("arena2", 2094) == nil --blind
+     and UnitDebuffID("arena2", 1776) == nil --gouge
+     and UnitDebuffID("arena2", 1833) == nil --cheapshot
+     and UnitDebuffID("arena2", 8643) == nil --kidney
+     and UnitDebuffID("arena2", 51514) == nil --hex
+     and UnitDebuffID("arena2", 8983) == nil --bear stun
+     and UnitDebuffID("arena2", 5246) == nil --intimidating shout
+     and not UnitDebuffID("arena2", 28272) then
+       _castSpell(33786, "arena2")
+     end
+   end
+   --Clone arena3 if not party1target or party2target
+   if ValidUnit("arena3", "enemy") 
+   and getHp("arena3") > 95 then 
+     if UnitDebuffID("arena3", 33786) then
+       clonearena3 = GetTime() + 20
+     end
+     if clonearena3 ~= nil
+     and GetTime() > clonearena3 then
+       clonearena3 = nil
+     end
+     if clonearena3 == nil 
+     and getHp(lowest) > 90
+     and UnitName("arena3") ~= UnitName("party1target")
+     and UnitName("arena3") ~= UnitName("party2target") 
+     and not UnitDebuffID("arena1", 33786)
+     and not UnitDebuffID("arena2", 33786)
+     and not UnitDebuffID("arena3", 33786)
+     and not UnitDebuffID("arena3", 12826)
+     and not UnitDebuffID("arena3", 28271)
+     and not UnitDebuffID("arena3", 61721)
+     and not UnitDebuffID("arena3", 61305)
+     and UnitBuffID("arena3", 8178) == nil --grounding
+     and UnitBuffID("arena3", 45438) == nil --ice block
+     and UnitBuffID("arena3", 642) == nil --bubble
+     and UnitBuffID("arena3", 19263) == nil --deterrance
+     and UnitBuffID("arena3", 31224) == nil --cloak of shadows
+     and UnitBuffID("arena3", 48707) == nil --AMS
+     and UnitDebuffID("arena3", 51724) == nil --sap
+     and UnitDebuffID("arena3", 10308) == nil --hoj
+     and UnitDebuffID("arena3", 44572) == nil --deep freeze
+     and UnitDebuffID("arena3", 15487) == nil --silence
+     and UnitDebuffID("arena3", 47476) == nil --strangulate
+     and UnitDebuffID("arena3", 6215) == nil --fear
+     and UnitDebuffID("arena3", 10890) == nil --psychic scream
+     and UnitDebuffID("arena3", 6358) == nil --seduction
+     and UnitDebuffID("arena3", 2139) == nil --counter spell
+     and UnitDebuffID("arena3", 17928) == nil --howl of terror
+     and UnitDebuffID("arena3", 60210) == nil --freezing arrow
+     and UnitDebuffID("arena3", 14309) == nil --freezing trap
+     and UnitDebuffID("arena3", 2094) == nil --blind
+     and UnitDebuffID("arena3", 1776) == nil --gouge
+     and UnitDebuffID("arena3", 1833) == nil --cheapshot
+     and UnitDebuffID("arena3", 8643) == nil --kidney
+     and UnitDebuffID("arena3", 51514) == nil --hex
+     and UnitDebuffID("arena3", 8983) == nil --bear stun
+     and UnitDebuffID("arena3", 5246) == nil --intimidating shout
+     and not UnitDebuffID("arena3", 28272) then
+       _castSpell(33786, "arena3")
+     end
+   end
 
   --Mana Innervate
   local PlayerMana = 100 * UnitPower("player") / UnitPowerMax("player")
@@ -266,6 +431,7 @@ function Any()
   for _, unit in ipairs(EnemyList) do
     if ( UnitClass(unit) == "Rogue" or UnitClass(unit) == "Druid" )
     and not UnitDebuffID(unit, 770)
+    and not UnitDebuffID(unit, 33786)
     and not UnitBuffID(unit, 31224) then
       _castSpell(770, unit)
     end
