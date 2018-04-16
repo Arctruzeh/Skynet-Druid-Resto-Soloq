@@ -102,6 +102,26 @@ function General()
   and GetBattlefieldInstanceRunTime() <= 40200 then
     RunMacroText("/p Play down. You will not get healed if you go on bridge. Juega debajo del puente. No sanarás si vas al puente.")
   end
+  if UnitBuffID("player", 32727) 
+  and GetMinimapZoneText() == "Dalaran Arena" then
+    local X1,Y1,Z1 = ObjectPosition("player")
+    local X2 = 1231.523071
+    local Y2 = 764.723938
+    if sqrt((X1 - X2)^2 + (Y1 - Y2)^2) > 1
+    and sqrt((X1 - X2)^2 + (Y1 - Y2)^2) < 20 then
+      MoveTo (X2, Y2, Z1, true)
+    end
+  end
+  if UnitBuffID("player", 32727) 
+  and GetMinimapZoneText() == "Dalaran Arena" then
+    local X1,Y1,Z1 = ObjectPosition("player")
+    local X2 = 4083.7341308594
+    local Y2 = 2871.1450195313
+    if sqrt((X1 - X2)^2 + (Y1 - Y2)^2) > 1
+    and sqrt((X1 - X2)^2 + (Y1 - Y2)^2) < 20 then
+      MoveTo (X2, Y2, Z1, true)
+    end
+  end
 
   --move to spot after prep
   if GetMinimapZoneText() == "Nagrand Arena" 
@@ -148,6 +168,26 @@ function General()
     local X1,Y1,Z1 = ObjectPosition("player")
     local X2 = 6254.819336
     local Y2 = 248.692902
+    if sqrt((X1 - X2)^2 + (Y1 - Y2)^2) < 60 then
+      MoveTo (X2, Y2, Z1, true)
+    end
+  end
+  if GetMinimapZoneText() == "Dalaran Arena" 
+  and GetBattlefieldInstanceRunTime() >= 60000
+  and GetBattlefieldInstanceRunTime() <= 63000 then
+    local X1,Y1,Z1 = ObjectPosition("player")
+    local X2 = 1270.259399
+    local Y2 = 769.333984
+    if sqrt((X1 - X2)^2 + (Y1 - Y2)^2) < 60 then
+      MoveTo (X2, Y2, Z1, true)
+    end
+  end
+  if GetMinimapZoneText() == "Dalaran Arena" 
+  and GetBattlefieldInstanceRunTime() >= 60000
+  and GetBattlefieldInstanceRunTime() <= 63000 then
+    local X1,Y1,Z1 = ObjectPosition("player")
+    local X2 = 1311.687988
+    local Y2 = 812.966309
     if sqrt((X1 - X2)^2 + (Y1 - Y2)^2) < 60 then
       MoveTo (X2, Y2, Z1, true)
     end
@@ -215,21 +255,42 @@ function General()
   end
 
   --start moving if out of los
-  if UnitExists(lowest) == 1 
-  and UnitIsDead(lowest) == nil
-  and UnitIsConnected(lowest) == 1
-  and lowest ~= "player"
-  and not _LoS(lowest)
+  if UnitExists("party1") == 1 
+  and UnitIsDead("party1") == nil
+  and UnitIsConnected("party1") == 1
+  and not _LoS("party1")
   and not _LoS("party1", "party2") 
+  and realHp("party1") < realHp("player")
+  and realHp("party1") < realHp("party2")
   then
 
-    if MoveToObject(lowest) ~= nil then
-      local X, Y, Z = MoveToObject(lowest)
+    if MoveToObject("party1") ~= nil then
+      local X, Y, Z = MoveToObject("party1")
       MoveTo (X, Y, Z, true)
     end
 
-    if MoveToObject(lowest) == nil then
-      stayinlos(lowest, "player")
+    if MoveToObject("party1") == nil then
+      stayinlos("party1", "player")
+    end
+
+  end
+
+  if UnitExists("party2") == 1 
+  and UnitIsDead("party2") == nil
+  and UnitIsConnected("party2") == 1
+  and not _LoS("party2")
+  and not _LoS("party1", "party2") 
+  and realHp("party2") < realHp("player")
+  and realHp("party2") < realHp("party1")
+  then
+
+    if MoveToObject("party2") ~= nil then
+      local X, Y, Z = MoveToObject("party2")
+      MoveTo (X, Y, Z, true)
+    end
+
+    if MoveToObject("party2") == nil then
+      stayinlos("party2", "player")
     end
 
   end
